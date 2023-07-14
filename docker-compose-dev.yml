@@ -94,7 +94,7 @@ services:
       - scalelite-api
 
   scalelite-api:
-    image: ${SCALELITE_DOCKER_IMAGE:-blindsidenetwks/scalelite:v1.1}
+    image: ${SCALELITE_DOCKER_IMAGE:-blindsidenetwks/scalelite}
     container_name: scalelite-api
     restart: unless-stopped
     env_file:
@@ -116,7 +116,7 @@ services:
       driver: journald
 
   scalelite-poller:
-    image: ${SCALELITE_DOCKER_IMAGE:-blindsidenetwks/scalelite:v1.1}
+    image: ${SCALELITE_DOCKER_IMAGE:-blindsidenetwks/scalelite}
     container_name: scalelite-poller
     restart: unless-stopped
     env_file:
@@ -134,7 +134,7 @@ services:
       driver: journald
 
   scalelite-recording-importer:
-    image: ${SCALELITE_DOCKER_IMAGE:-blindsidenetwks/scalelite:v1.1}
+    image: ${SCALELITE_DOCKER_IMAGE:-blindsidenetwks/scalelite}
     container_name: scalelite-recording-importer
     restart: unless-stopped
     env_file:
