@@ -95,38 +95,38 @@ else
   groupadd -g 2000 scalelite-spool
 fi
 
-if grep -q bigbluebutton /etc/passwd
+if grep -q ubuntu /etc/passwd
 then
-  echo "User <bigbluebutton> exists"
+  echo "User <ubuntu> exists"
 else
-  echo 'User <bigbluebutton> does not exist. Add the bigbluebutton user using group <scalelite-spool>...'
-  useradd -m -d /home/bigbluebutton -s /bin/bash bigbluebutton
+  echo 'User <ubuntu> does not exist. Add the ubuntu user using group <scalelite-spool>...'
+  useradd -m -d /home/ubuntu -s /bin/bash ubuntu
 fi
-usermod -a -G scalelite-spool bigbluebutton
+usermod -a -G scalelite-spool ubuntu
 
-if [ -d "/home/bigbluebutton" ]
+if [ -d "/home/ubuntu" ]
 then
-  echo "Home Directory for <bigbluebutton> was found"
+  echo "Home Directory for <ubuntu> was found"
 else
-  echo "Home Directory for <bigbluebutton> was not found"
-  mkdir /home/bigbluebutton
-  chown bigbluebutton.bigbluebutton /home/bigbluebutton/
+  echo "Home Directory for <ubuntu> was not found"
+  mkdir /home/ubuntu
+  chown ubuntu.ubuntu /home/ubuntu/
 fi
 
 echo 'Generate ssh key pair if does not exist...'
-su - bigbluebutton -s /bin/bash -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_rsa <<<n >/dev/null 2>&1" || true
+su - ubuntu -s /bin/bash -c "ssh-keygen -t ed25519 -N '' -f ~/.ssh/id_rsa <<<n >/dev/null 2>&1" || true
 
 echo 'Generate ssh config...'
-if [ -f "/home/bigbluebutton/.ssh/config" ]; then
-  echo "file /home/bigbluebutton/.ssh/config exists"
-  rm /home/bigbluebutton/.ssh/config
+if [ -f "/home/ubuntu/.ssh/config" ]; then
+  echo "file /home/ubuntu/.ssh/config exists"
+  rm /home/ubuntu/.ssh/config
 fi
-echo "Host scalelite-spool" | sudo tee -a /home/bigbluebutton/.ssh/config
-echo "  HostName $HOST" | sudo tee -a /home/bigbluebutton/.ssh/config
-echo "  User ${USER:-bigbluebutton}" | sudo tee -a /home/bigbluebutton/.ssh/config
-echo "  Port ${PORT:-22}" | sudo tee -a /home/bigbluebutton/.ssh/config
-echo "  IdentityFile /home/bigbluebutton/.ssh/${ID_RSA:-id_rsa}" | sudo tee -a /home/bigbluebutton/.ssh/config
-chown bigbluebutton.bigbluebutton /home/bigbluebutton/.ssh/config
+echo "Host scalelite-spool" | sudo tee -a /home/ubuntu/.ssh/config
+echo "  HostName $HOST" | sudo tee -a /home/ubuntu/.ssh/config
+echo "  User ${USER:-ubuntu}" | sudo tee -a /home/ubuntu/.ssh/config
+echo "  Port ${PORT:-22}" | sudo tee -a /home/ubuntu/.ssh/config
+echo "  IdentityFile /home/ubuntu/.ssh/${ID_RSA:-id_rsa}" | sudo tee -a /home/ubuntu/.ssh/config
+chown ubuntu.ubuntu /home/ubuntu/.ssh/config
 
 echo 'Add recording transfer scripts...'
 POST_PUBLISH_DIR=/usr/local/bigbluebutton/core/scripts/post_publish
@@ -148,10 +148,10 @@ sed -e '/extra_rsync_opts/ s/^#*/#/' -i $CORE_SCRIPTS_DIR/scalelite.yml
 echo 'spool_dir: scalelite-spool:/var/bigbluebutton/spool' | tee -a $CORE_SCRIPTS_DIR/scalelite.yml
 echo 'extra_rsync_opts: ["-av", "--no-owner", "--chmod=F664"]' | tee -a $CORE_SCRIPTS_DIR/scalelite.yml
 
-public_key=$(cat /home/bigbluebutton/.ssh/id_rsa.pub)
+public_key=$(cat /home/ubuntu/.ssh/id_rsa.pub)
 set +x
 echo "**********************************************************************"
-echo "Add this key to /home/bigbluebutton/.ssh/authorized_keys in scalelite:"
+echo "Add this key to /home/ubuntu/.ssh/authorized_keys in scalelite:"
 echo "**********************************************************************"
 echo
 echo "$public_key"
