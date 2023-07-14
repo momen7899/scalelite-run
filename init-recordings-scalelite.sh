@@ -6,11 +6,6 @@ SCALELITE_RECORDING_DIR=${SCALELITE_RECORDING_DIR-/mnt/scalelite-recordings/var/
 echo 'Add dependencies...'
 apt-get install -y rsync
 
-echo 'Add the bigbluebutton user...'
-id -u bigbluebutton &>/dev/null || useradd -m -d /home/bigbluebutton -s /bin/bash bigbluebutton
-if [ ! -d "/home/bigbluebutton/.ssh" ]; then
-  su - bigbluebutton -s /bin/bash -c 'mkdir ~/.ssh && touch ~/.ssh/authorized_keys'
-fi
 
 echo 'Create a new group with GID 2000...'
 if grep -q scalelite-spool /etc/group; then
@@ -20,8 +15,8 @@ else
   groupadd -g 2000 scalelite-spool
 fi
 
-echo 'Add the bigbluebutton user to the group...'
-usermod -a -G scalelite-spool bigbluebutton
+echo 'Add the ubuntu user to the group...'
+usermod -a -G scalelite-spool ubuntu
 
 echo 'Create the directory structure for recording ...'
 mkdir -p $SCALELITE_RECORDING_DIR/spool
